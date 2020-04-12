@@ -1,0 +1,24 @@
+{
+  "name": "poster",
+  "version": "1.0.0",
+  "description": "The util which upload your posts to your database",
+  "main": "poster.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node poster"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no"
+  },
+  "keywords": [
+    "POST",
+    "DATABASE",
+    "MYSQL"
+  ],
+  "author": "LEO",
+  "license": "MIT",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
+}
