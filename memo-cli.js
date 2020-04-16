@@ -1,4 +1,4 @@
-/* This is a cli post-util for blog theme <spark>*/
+/* This is a cli post-util for blog theme <memo>*/
 'use strict';
 
 const fs = require('fs');
@@ -38,7 +38,7 @@ function worker() {
         let func = _.trim();
         if (func === '1') {
             r.close();
-            let header, githubref, username;
+            let header, username;
             let rl = readline.createInterface(stdConfig);
             rl.question('header:', answer => {
                 header = answer;
@@ -87,7 +87,7 @@ function worker() {
                                     let sdate = JSON.stringify(date);
                                     pool.getConnection((e, conn) => {
                                         if (e) throw e;
-                                        conn.query(`insert into post (title, content, posttime${coverimage ? ', coverimage' : ''}${author ? ', author' : ''}values(?, ? ,? ${coverimage ? ',?' : ''}${author ? ',?' : ''})`, [title, text, sdate, coverimage, author], (e, results) => {
+                                        conn.query(`insert into post (title, content, posttime${coverimage ? ', coverimage' : ''}${author ? ', author)' : ''}values(?, ? ,? ${coverimage ? ',?' : ''}${author ? ',?' : ''})`, [title, text, sdate, coverimage, author], (e, results) => {
                                             if (e) throw e;
                                             conn.release();
                                             process.exit(0);
@@ -112,7 +112,7 @@ function worker() {
                                     r1.question('content: ', answer => {
                                         if (answer) {
                                             let t = fs.readFileSync(`./posts/${answer}`);
-                                            content = t.toString;
+                                            content = t.toString();
                                         } else {
                                             content = '';
                                         }
@@ -121,20 +121,24 @@ function worker() {
                                             if (title) {
                                                 conn.query('update post set title=? where id=?', [title, id], (e) => {
                                                     if (e) throw e;
+                                                    conn.release();
+                                                    process.exit(0);
                                                 });
                                             }
                                             if (content) {
                                                 conn.query('update post set content=? where id=?', [content, id], (e) => {
                                                     if (e) throw e;
+                                                    conn.release();
+                                                    process.exit(0);
                                                 })
                                             }
                                             if (coverimage) {
                                                 conn.query('update post set coverimage=? where id=?', [coverimage, id], (e) => {
                                                     if (e) throw e;
+                                                    conn.release();
+                                                    process.exit(0);
                                                 })
                                             }
-                                            conn.release();
-                                            process.exit(0);
                                         })
                                     })
                                 })
@@ -204,14 +208,15 @@ function worker() {
                                         if (title) {
                                             conn.query('update note set title=? where id=?', [title, id], (e)=> {
                                                 if (e) throw e;
+                                                process.exit(0);
                                             });
                                         }
                                         if (content) {
                                             conn.query('update note set content=? where id=?', [content, id], (e) => {
                                                 if (e) throw e;
+                                                process.exit(0);
                                             });
                                         }
-                                        process.exit(0);
                                     })
                                 })
                             })
@@ -269,9 +274,9 @@ function worker() {
                                 if (e) throw e;
                                 conn.query('insert into friends(nickname, website)values(?, ?)', [nickname, website], (e) => {
                                     if (e) throw e;
+                                    process.exit(0);
                                 });
                                 conn.release();
-                                process.exit(0);
                             })
                         })
                     });
@@ -300,9 +305,9 @@ function worker() {
                                             conn.query('update friends set website=? where id=?', [website, id], e => {
                                                 if (e) throw e;
                                                 conn.release();
+                                                process.exit(0);
                                             });
                                         }
-                                        process.exit(0);
                                     })
                                 })
                             })
